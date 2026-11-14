@@ -1,0 +1,112 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  CHARGEDBACK
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  name         String    @db.VarChar(120)
+  phone        String    @unique @db.VarChar(12)
+  nic          String    @unique @db.VarChar(12)
+  passwordHash String
+  role         Role      @default(MEMBER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  payments     Payment[]
+  admissionApprovals AdmissionApproval[]
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Plan {
+  id          String    @id
+  title       String
+  amountMinor Int
+  currency    String    @default("LKR") @db.VarChar(3)
+  months      Int       @default(0)
+  active      Boolean   @default(true)
+  payments    Payment[]
+}
+
+model Payment {
+  id                String        @id @default(uuid()) @db.Uuid
+  userId            String        @db.Uuid
+  user              User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  planId            String
+  plan              Plan          @relation(fields: [planId], references: [id], onDelete: Restrict)
+  description       String
+  amountMinor       Int
+  currency          String        @default("LKR") @db.VarChar(3)
+  status            PaymentStatus @default(PENDING)
+  provider          String        @default("PAYHERE")
+  sandbox           Boolean
+  providerPaymentId String?       @unique
+  idempotencyKey    String        @unique @db.Uuid
+  billingName       String
+  billingEmail      String
+  billingAddress    String
+  billingCity       String
+  paidAt            DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  admissionApproval AdmissionApproval?
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+model AdmissionApproval {
+  paymentId    String   @id @db.Uuid
+  payment      Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  notifiedById String   @db.Uuid
+  notifiedBy   User     @relation(fields: [notifiedById], references: [id], onDelete: Restrict)
+  notifiedAt   DateTime @default(now())
+
+  @@index([notifiedById])
+}
+
+model MediaAsset {
+  id        String   @id @default(uuid()) @db.Uuid
+  filename  String   @unique
+  mimeType  String
+  size      Int
+  sha256    String
+  // Legacy bytes are retained until the Cloudinary original is verified.
+  data      Bytes?
+  cloudName String?
+  cloudPublicId String?
+  cloudAssetId String?
+  cloudUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
