@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Globus Fitness – AI Agent Architecture & WhatsApp Automation</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      line-height: 1.55;
+      font-size: 13.5px;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+    }
+
+    /* Cover / Header Section */
+    .header-banner {
+      border-bottom: 3px solid #f97316;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+
+    .badge-top {
+      display: inline-block;
+      background: #ffedd5;
+      color: #c2410c;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .meta-grid {
+      display: flex;
+      gap: 20px;
+      font-size: 11.5px;
+      color: #475569;
+      background: #f8fafc;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .meta-grid div strong {
+      color: #0f172a;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    h4 {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+    }
+
+    /* Callout & Cards */
+    .callout {
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .callout-success {
+      background: #f0fdf4;
+      border-left: 4px solid #10b981;
+      padding: 12px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .agent-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      background: #ffffff;
+      page-break-inside: avoid;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+    }
+
+    .agent-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .pill-supervisor { background: #e0e7ff; color: #3730a3; }
+    .pill-worker { background: #dbeafe; color: #1e40af; }
+    .pill-timer { background: #fef3c7; color: #92400e; }
+    .pill-vision { background: #f3e8ff; color: #6b21a8; }
+    .pill-critical { background: #fee2e2; color: #991b1b; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    td {
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* WhatsApp Chat Simulation */
+    .chat-container {
+      background: #e5ddd5;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 12px 0 16px 0;
+      page-break-inside: avoid;
+    }
+
+    .chat-bubble {
+      max-width: 82%;
+      padding: 8px 12px;
+      border-radius: 7.5px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .chat-in {
+      background: #ffffff;
+      color: #111827;
+      margin-right: auto;
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .chat-out {
+      background: #d9fdd3;
+      color: #111827;
+      margin-left: auto;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .chat-sender {
+      font-weight: 700;
+      font-size: 10.5px;
+      color: #047857;
+      margin-bottom: 2px;
+    }
+
+    .chat-time {
+      font-size: 9.5px;
+      color: #64748b;
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    /* Flow diagram box */
+    .flow-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px;
+      margin: 12px 0;
+      font-family: monospace;
+      font-size: 11.5px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+
+    ul, ol {
+      margin: 4px 0 10px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-banner">
+    <span class="badge-top">System Specification & Architecture Document</span>
+    <h1>Globus Fitness: Autonomous Multi-Agent & WhatsApp Bot Architecture</h1>
+    <div class="subtitle">Self-Regulating Membership Lifecycle, Automated Billing Verification, and Smart Proactive Reminders</div>
+    <div class="meta-grid">
+      <div><strong>Platform:</strong> Globus Fitness Club</div>
+      <div><strong>Stack:</strong> React 19 + Node.js 24 + Neon PostgreSQL + Prisma 7</div>
+      <div><strong>Communication:</strong> WhatsApp Business Cloud API</div>
+      <div><strong>Architecture Pattern:</strong> Hierarchical Supervisor-Worker Multi-Agent</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>1. Executive Summary & Workflow Objectives</h2>
+  <p>
+    This document defines the architectural blueprint and operational mechanics for <strong>Globus Fitness Club's</strong> customer onboarding and subscription lifecycle. By combining a <strong>WhatsApp Business Cloud API bot</strong> with a specialized <strong>Hierarchical Multi-Agent System</strong>, the gym automates routine manual checks, payment validations, deadline enforcement, and proactive retention communications while maintaining strict administrative control.
+  </p>
+
+  <div class="callout">
+    <strong>Core Principles:</strong>
+    <ul>
+      <li><strong>Admission-First Policy:</strong> No customer can access membership plans or workout facilities until their one-time admission fee (LKR 2,500) is paid and approved by an authorized administrator.</li>
+      <li><strong>Deterministic Business Logic + Intelligent Agents:</strong> Critical date math (+30 days chaining, expiration dates) is computed deterministically in JavaScript/PostgreSQL, while AI agents handle conversational comprehension, receipt OCR data extraction, and exception escalation.</li>
+      <li><strong>Self-Regulating Deadlines:</strong> 72-hour (3-day) registration cleanup prevents ghost records, and a 7-day plan payment threshold flags delinquent selections for administrative review.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 2: ARCHITECTURE -->
+  <h2>2. Hierarchical Multi-Agent System Topology</h2>
+  <p>
+    The system follows a <strong>Supervisor-Worker topology</strong>. The Master Supervisor Agent governs the state transitions of every member profile, delegating specific domain tasks to 6 focused sub-agents:
+  </p>
+
+  <div class="flow-box">
+[ CUSTOMER (Web / WhatsApp) ]  &lt;===&gt;  [ WHATSAPP CLOUD API GATEWAY ]
+                                                ||
+                                    +-----------------------+
+                                    | MASTER SUPERVISOR AGENT| &lt;===&gt; [ NEON POSTGRESQL / PRISMA ]
+                                    +-----------------------+
+                                                ||
+     +-------------------+----------------------+-------------------+-------------------+
+     |                   |                      |                   |                   |
+[ Agent 1 ]         [ Agent 2 ]            [ Agent 3 ]         [ Agent 4 ]         [ Agent 5 ]
+WhatsApp Concierge   Admission Watchdog     Receipt OCR & Admin Plan & Billing      Renewal & Reminder
+(Conversations)     (3-Day Auto-Purge)     (Slip Validation)   (Date Math)         (Day-27 Watcher)
+                                                                                        |
+                                                                                   [ Agent 6 ]
+                                                                                   Delinquency Audit
+                                                                                   (7-Day Plan Unpaid)
+  </div>
+
+  <!-- SECTION 3: DETAILED AGENTS -->
+  <div class="page-break"></div>
+  <h2>3. Detailed Specifications of the AI Agents</h2>
+
+  <!-- Master Agent -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">🧠 Agent 0: Master Supervisor Agent (System Orchestrator)</span>
+      <span class="pill pill-supervisor">Master Orchestrator</span>
+    </div>
+    <p><strong>Primary Function:</strong> Enforces the system-wide state machine, sequences agent tasks, monitors agent health, and commits verified state changes to PostgreSQL.</p>
+    <ul>
+      <li><strong>Input Triggers:</strong> Website registration event, incoming WhatsApp webhook message, scheduled cron heartbeat, Admin dashboard action.</li>
+      <li><strong>State Management:</strong> Maintains customer states (<code>REGISTERED_UNPAID</code> &rarr; <code>ADMISSION_PENDING_VERIFICATION</code> &rarr; <code>ADMISSION_APPROVED</code> &rarr; <code>PLAN_SELECTED_PENDING_PAYMENT</code> &rarr; <code>ACTIVE_MEMBER</code> &rarr; <code>PAYMENT_OVERDUE</code>).</li>
+      <li><strong>Enforcement:</strong> Prevents out-of-order execution (e.g. rejects plan assignments if admission status is not approved by admin).</li>
+    </ul>
+  </div>
+
+  <!-- Agent 1 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">💬 Agent 1: WhatsApp Concierge & Interaction Agent</span>
+      <span class="pill pill-worker">Worker Agent</span>
+    </div>
+    <p><strong>Primary Function:</strong> The human-facing conversational interface responsible for inbound message comprehension, dynamic template generation, and interactive guidance.</p>
+    <ul>
+      <li><strong>Key Tasks:</strong>
+        <ol>
+          <li>Sends immediate welcome greeting with bank transfer instructions upon website account creation.</li>
+          <li>Ingests payment slips (images/PDFs) uploaded by the user and forwards raw assets to Agent 3.</li>
+          <li>Presents plan selection prompts (1 Month @ LKR 2,500, 3 Months @ LKR 7,000, 6 Months @ LKR 12,000, Annual @ LKR 25,000) once admission is approved.</li>
+          <li>Dispatches scheduled renewal reminders (Day 27) and confirmation receipts.</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Agent 2 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">⏱️ Agent 2: Admission Watchdog Agent (3-Day Policy)</span>
+      <span class="pill pill-timer">Timer / Janitor</span>
+    </div>
+    <p><strong>Primary Function:</strong> Cleans up abandoned registrations where customers registered on the web but failed to submit admission payment within 72 hours.</p>
+    <ul>
+      <li><strong>Trigger:</strong> Hourly scheduled sweep.</li>
+      <li><strong>Logic:</strong> Identifies records in <code>REGISTERED_UNPAID</code> state where <code>createdAt &lt; (now - 72 hours)</code> with zero payment proof.</li>
+      <li><strong>Action:</strong> Dispatches a courteous farewell notification via WhatsApp (<em>"Your registration window has expired. You may re-register anytime"</em>) and purges the pending record from the database to release the phone number and NIC.</li>
+    </ul>
+  </div>
+
+  <!-- Agent 3 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">🔍 Agent 3: Receipt OCR & Admin Verification Agent</span>
+      <span class="pill pill-vision">Vision / OCR / Validation</span>
+    </div>
+    <p><strong>Primary Function:</strong> Parses bank deposit slips or transfer receipts using multimodal vision OCR, extracts transaction metadata, and submits an actionable review card to the Gym Admin.</p>
+    <ul>
+      <li><strong>Extraction Fields:</strong> Bank Name, Transaction Ref / Trace ID, Transfer Amount, Date & Time, Sender Account Name.</li>
+      <li><strong>Validation Checks:</strong> Confirms transfer amount matches required fee (e.g. LKR 2,500). Verifies transaction reference is unique (anti-fraud duplicate slip check).</li>
+      <li><strong>Admin Dispatch:</strong> Automatically queues the image with pre-filled verification data in the Admin Dashboard. Once the Admin clicks <em>"Approve & Unlock"</em>, this agent triggers the Supervisor to update the member's status.</li>
+    </ul>
+  </div>
+
+  <!-- Agent 4 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">📅 Agent 4: Plan Subscription & Billing Calculation Agent</span>
+      <span class="pill pill-worker">Deterministic Math</span>
+    </div>
+    <p><strong>Primary Function:</strong> Executes exact date arithmetic for gym subscriptions and ensures continuous coverage without losing paid days.</p>
+    <ul>
+      <li><strong>Initial Plan:</strong> Sets <code>startDate = registrationDate</code> (or activation date) and <code>endDate = startDate + 30 days</code>.</li>
+      <li><strong>Rolling Renewal:</strong> When extending an existing subscription, sets <code>newStartDate = previousEndDate</code> and <code>newEndDate = previousEndDate + 30 days</code>, guaranteeing that early payments don't penalize the customer.</li>
+    </ul>
+  </div>
+
+  <!-- Agent 5 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">🔔 Agent 5: Subscription Renewal & Day-27 Reminder Agent</span>
+      <span class="pill pill-timer">Proactive Monitor</span>
+    </div>
+    <p><strong>Primary Function:</strong> Monitors active members and drives membership retention through timed payment reminders.</p>
+    <ul>
+      <li><strong>Trigger:</strong> Daily scheduled check at 08:00 AM.</li>
+      <li><strong>Condition:</strong> <code>(subscription.endDate - today) === 3 days</code> (the 27th day of a 30-day billing cycle).</li>
+      <li><strong>Action:</strong> Commands Agent 1 to dispatch a reminder message indicating exact renewal amount, banking details, and the due date.</li>
+    </ul>
+  </div>
+
+  <!-- Agent 6 -->
+  <div class="agent-card">
+    <div class="agent-header">
+      <span class="agent-title">⚠️ Agent 6: Delinquency & Grace Period Escalation Agent</span>
+      <span class="pill pill-critical">Audit / Escalation</span>
+    </div>
+    <p><strong>Primary Function:</strong> Enforces the 7-day payment window for customers who have selected a membership plan but have not completed payment.</p>
+    <ul>
+      <li><strong>Condition:</strong> Status is <code>PLAN_SELECTED_PENDING_PAYMENT</code> for &gt; 7 days without receipt submission.</li>
+      <li><strong>Action:</strong> Marks status as <code>PLAN_PAYMENT_OVERDUE</code> and escalates an alert directly to the gym manager for follow-up or deactivation.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 4: COMPLETE STEP-BY-STEP SCENARIO -->
+  <div class="page-break"></div>
+  <h2>4. End-to-End Walkthrough: Real-World Scenario</h2>
+
+  <p>To illustrate how these agents collaborate seamlessly, consider customer <strong>"Kasun Perera"</strong> joining Globus Fitness.</p>
+
+  <h3>Phase 1: Registration & Admission Payment (Day 0)</h3>
+  <ul>
+    <li><strong>Step 1:</strong> Kasun visits <code>globusfitness.lk</code>, clicks <strong>Register</strong>, enters his name, NIC (<code>200012345678</code>), and phone number (<code>+94 77 123 4567</code>).</li>
+    <li><strong>Step 2:</strong> <code>Master Supervisor</code> detects new registration. Sets status to <code>REGISTERED_UNPAID</code>. Starts the 72-hour timer with <code>Agent 2</code>.</li>
+    <li><strong>Step 3:</strong> <code>Agent 1 (WhatsApp Concierge)</code> initiates dialogue with Kasun:</li>
+  </ul>
+
+  <div class="chat-container">
+    <div class="chat-bubble chat-out">
+      <div class="chat-sender">Globus Fitness Bot</div>
+      Hello <strong>Kasun Perera</strong>! 🏋️ Welcome to Globus Fitness Club.<br><br>
+      To activate your gym access, please complete your one-time <strong>Admission Fee of LKR 2,500</strong>.<br><br>
+      🏦 <strong>Bank Transfer Details:</strong><br>
+      • Bank: Commercial Bank of Ceylon<br>
+      • Account Name: Globus Fitness Club<br>
+      • Account No: 1000849201<br>
+      • Branch: Main Branch<br><br>
+      📸 Please transfer the amount and upload your payment slip (photo or PDF) right here in this chat!
+      <div class="chat-time">10:02 AM</div>
+    </div>
+  </div>
+
+  <h3>Phase 2: Payment Receipt & Admin Verification (Day 0 + 2 Hours)</h3>
+  <ul>
+    <li><strong>Step 4:</strong> Kasun makes a transfer using his banking app and shares a screenshot into WhatsApp.</li>
+    <li><strong>Step 5:</strong> <code>Agent 3 (Receipt OCR)</code> downloads image, parses text:
+      <ul>
+        <li><em>Extracted: Commercial Bank, Ref #TX98412, LKR 2,500.00, Status: Successful</em>.</li>
+        <li>No duplicate reference found in database. Amount matches admission fee.</li>
+      </ul>
+    </li>
+    <li><strong>Step 6:</strong> <code>Agent 3</code> posts card to Admin Panel: <em>"Kasun Perera - LKR 2,500 Admission Slip. [View Slip] [Approve] [Reject]"</em>.</li>
+    <li><strong>Step 7:</strong> Gym Admin verifies funds in the bank account and clicks <strong>"Approve as Gym Member"</strong>.</li>
+    <li><strong>Step 8:</strong> <code>Master Supervisor</code> cancels the 72-hour watchdog timer and updates status to <code>ADMISSION_APPROVED</code>.</li>
+  </ul>
+
+  <h3>Phase 3: Plan Selection & Duration Calculation</h3>
+  <ul>
+    <li><strong>Step 9:</strong> <code>Agent 1</code> prompts Kasun immediately via WhatsApp:</li>
+  </ul>
+
+  <div class="chat-container">
+    <div class="chat-bubble chat-out">
+      <div class="chat-sender">Globus Fitness Bot</div>
+      🎉 Great news Kasun! Your admission fee has been verified and you are officially registered as a <strong>Gym Member</strong>.<br><br>
+      Which membership plan would you like to start with?<br>
+      1️⃣ <strong>1 Month Plan:</strong> LKR 2,500<br>
+      2️⃣ <strong>3 Months Plan:</strong> LKR 7,000<br>
+      3️⃣ <strong>6 Months Plan:</strong> LKR 12,000<br>
+      4️⃣ <strong>Annual Plan:</strong> LKR 25,000<br><br>
+      Reply with <strong>1, 2, 3, or 4</strong> to select.
+      <div class="chat-time">12:15 PM</div>
+    </div>
+    <div class="chat-bubble chat-in">
+      <div class="chat-sender">Kasun Perera</div>
+      1
+      <div class="chat-time">12:18 PM</div>
+    </div>
+  </div>
+
+  <ul>
+    <li><strong>Step 10:</strong> <code>Agent 4 (Plan & Billing Agent)</code> calculates dates:
+      <ul>
+        <li>Plan: 1 Month (30 Days) | Price: LKR 2,500</li>
+        <li>Start Date: <strong>November 1, 2026</strong> (Registration Date)</li>
+        <li>Plan Expiry Date: <strong>December 1, 2026 (Day 30)</strong></li>
+        <li>Renewal Payment Due Date: <strong>November 28, 2026</strong> (3 days before December 1)</li>
+      </ul>
+    </li>
+    <li><strong>Step 11:</strong> <code>Agent 1</code> confirms the selection and sets expectation:</li>
+  </ul>
+
+  <div class="chat-container">
+    <div class="chat-bubble chat-out">
+      <div class="chat-sender">Globus Fitness Bot</div>
+      ✅ You have successfully chosen the <strong>1-Month Membership Plan (LKR 2,500)</strong>.<br><br>
+      📅 <strong>Plan Duration:</strong> Nov 1, 2026 &rarr; Dec 1, 2026 (30 Days)<br>
+      💳 <strong>Payment Due Date:</strong> November 28, 2026<br><br>
+      🔔 <em>We will send you a reminder on November 28 (3 days before your plan ends) so you can renew your monthly plan on time and keep training without interruption!</em><br><br>
+      See you at the gym! 💪
+      <div class="chat-time">12:19 PM</div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+  <h3>Phase 4: Month 1 Activation & Day-27 Proactive Reminder</h3>
+  <ul>
+    <li><strong>Step 12:</strong> Kasun transfers LKR 2,500 for his plan. Admin validates slip. Status set to <code>ACTIVE_MEMBER</code>.</li>
+    <li><strong>Step 13:</strong> Time progresses to <strong>November 28, 2026 (Day 27)</strong>.</li>
+    <li><strong>Step 14:</strong> <code>Agent 5 (Renewal Agent)</code> daily sweep detects: <code>(Dec 1 - Nov 28) = 3 Days Remaining</code>.</li>
+    <li><strong>Step 15:</strong> <code>Agent 5</code> triggers <code>Agent 1</code> to send the Day-27 proactive reminder:</li>
+  </ul>
+
+  <div class="chat-container">
+    <div class="chat-bubble chat-out">
+      <div class="chat-sender">Globus Fitness Bot</div>
+      ⏰ <strong>Membership Renewal Reminder</strong><br><br>
+      Hi Kasun, your current 1-Month Plan expires in <strong>3 days</strong> on <strong>December 1, 2026</strong>.<br><br>
+      To ensure uninterrupted access to the gym, please renew your monthly plan:<br>
+      • <strong>Amount Due:</strong> LKR 2,500<br>
+      • <strong>Next Coverage:</strong> Dec 1, 2026 &rarr; Dec 31, 2026<br><br>
+      Transfer to our Commercial Bank account and upload your slip here! 🏋️‍♂️
+      <div class="chat-time">8:05 AM</div>
+    </div>
+  </div>
+
+  <h3>Phase 5: Seamless Renewal Chaining (No Lost Days)</h3>
+  <ul>
+    <li><strong>Step 16:</strong> Kasun pays on November 29 (2 days early) and uploads the receipt.</li>
+    <li><strong>Step 17:</strong> Admin approves the renewal payment.</li>
+    <li><strong>Step 18:</strong> <code>Agent 4</code> chains the dates starting from the <em>previous end date</em> (Dec 1), <strong>NOT</strong> the payment date:
+      <ul>
+        <li>New Coverage Period: <strong>December 1, 2026 &rarr; December 31, 2026</strong>.</li>
+        <li>Kasun receives full value for his subscription with zero lost days.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+
+  <!-- SECTION 5: EXCEPTION & TIMEOUT SCENARIOS -->
+  <h2>5. Exception & Timeout Safety Net</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Scenario</th>
+        <th style="width: 25%;">Triggering Condition</th>
+        <th style="width: 25%;">Agent Responsible</th>
+        <th style="width: 30%;">Enforced Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Abandoned Registration</strong></td>
+        <td>User registers online but does not submit admission payment within <strong>72 hours (3 days)</strong>.</td>
+        <td><strong>Agent 2</strong><br>(Admission Watchdog)</td>
+        <td>Sends final expiry notice on WhatsApp. Deletes pending user record from database so phone number and NIC can be used again.</td>
+      </tr>
+      <tr>
+        <td><strong>Unpaid Plan Selection</strong></td>
+        <td>Admission paid and approved, but member fails to pay chosen plan amount within <strong>7 days</strong>.</td>
+        <td><strong>Agent 6</strong><br>(Delinquency Agent)</td>
+        <td>Sets status to <code>PLAN_PAYMENT_OVERDUE</code>. Dispatches reminder warning to user and logs priority ticket in Admin Dashboard.</td>
+      </tr>
+      <tr>
+        <td><strong>Duplicate or Fraudulent Slip</strong></td>
+        <td>User uploads an already-used slip or mismatched transfer amount.</td>
+        <td><strong>Agent 3</strong><br>(Receipt OCR Agent)</td>
+        <td>Detects duplicate transaction reference. Flags slip as <code>SUSPICIOUS_REVIEW</code> for Admin inspection. Prevents automated unlocking.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 6: IMPLEMENTATION ROADMAP -->
+  <h2>6. Technical Implementation Stack</h2>
+  <ul>
+    <li><strong>WhatsApp Gateway:</strong> Official Meta WhatsApp Cloud API via Express Webhook router (<code>/api/webhooks/whatsapp</code>).</li>
+    <li><strong>Storage:</strong> PostgreSQL on Neon with Prisma 7 ORM and Prisma Client driver adapter.</li>
+    <li><strong>Receipt Processing:</strong> Multimodal Vision (Gemini 2.5 Flash / Vision API) for high-accuracy OCR extraction on Sri Lankan bank receipts (BOC, Commercial Bank, Sampath, HNB, FriMi).</li>
+    <li><strong>Background Jobs & Cron:</strong> Node.js scheduled workers for the 3-day admission watchdog (hourly) and 27th-day reminder agent (daily at 08:00 AM).</li>
+  </ul>
+
+</body>
+</html>
