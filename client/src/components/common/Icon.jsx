@@ -10,6 +10,9 @@ const paths = {
   strength: <><path d="m6 6 12 12M3 8l5-5M16 21l5-5M2 5l3-3M19 22l3-3M5 11l6-6M13 19l6-6" /></>,
   movement: <><path d="M3 12h4l3-8 4 16 3-8h4" /></>,
   time: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  copy: <><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></>,
+  check: <polyline points="20 6 9 17 4 12" />,
+  bank: <><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20z" /></>,
 }
 
 export default function Icon({ name, className = '' }) {
