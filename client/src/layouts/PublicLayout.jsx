@@ -24,7 +24,7 @@ export default function PublicLayout() {
       <main id="main-content" tabIndex="-1"><Outlet /></main>
       <footer className="site-footer">
         <div className="container footer-inner">
-          <Link to="/" className="brand" aria-label="Globus Fitness home"><img src={gymImages.logo} alt="" width="44" height="44" /><span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span></Link>
+          <Link to="/" className="brand" aria-label="Globus Fitness home"><img src={gymImages.logo} alt="Globus Fitness Club Logo" width="50" height="50" /><span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span></Link>
           <p>Show up. Put in the work. Keep going.</p>
           <span>© {new Date().getFullYear()} Globus Fitness</span>
         </div>

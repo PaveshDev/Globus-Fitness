@@ -18,6 +18,29 @@ export default function Home() {
               <a href="#membership" className="button button-primary">View memberships<Icon name="arrow" /></a>
               <a href="#equipment" className="button button-outline">Explore equipment</a>
             </div>
+            <div className="hero-social-proof">
+              <div className="social-proof-item">
+                <div className="rating-badge" aria-label="4.9 star rating">
+                  <span className="rating-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Icon key={i} name="star" className="star-icon" />
+                    ))}
+                  </span>
+                  <strong className="rating-value">4.9</strong>
+                </div>
+                <span className="social-proof-label">Member Rating</span>
+              </div>
+              <div className="social-proof-divider" aria-hidden="true" />
+              <div className="social-proof-item">
+                <strong className="stat-number">500+</strong>
+                <span className="social-proof-label">Active Members</span>
+              </div>
+              <div className="social-proof-divider" aria-hidden="true" />
+              <div className="social-proof-item">
+                <strong className="stat-number">6AM – 10PM</strong>
+                <span className="social-proof-label">Open Daily</span>
+              </div>
+            </div>
             <div className="hero-footnote"><span />YOUR ROUTINE. YOUR PROGRESS.</div>
           </div>
           <GymSlideshow />
@@ -25,9 +48,27 @@ export default function Home() {
       </section>
       <div className="training-strip">
         <div className="container training-strip-inner">
-          <span><Icon name="strength" />Strength training</span>
-          <span><Icon name="movement" />Cardio &amp; movement</span>
-          <span><Icon name="time" />A routine that’s yours</span>
+          <a href="#equipment" className="feature-item">
+            <span className="feature-icon"><Icon name="strength" /></span>
+            <div className="feature-content">
+              <h3>Strength training</h3>
+              <p>Free weights, power racks &amp; plate-loaded gear</p>
+            </div>
+          </a>
+          <a href="#equipment" className="feature-item">
+            <span className="feature-icon"><Icon name="movement" /></span>
+            <div className="feature-content">
+              <h3>Cardio &amp; movement</h3>
+              <p>Treadmills, bikes, rowers &amp; dynamic conditioning</p>
+            </div>
+          </a>
+          <a href="#membership" className="feature-item">
+            <span className="feature-icon"><Icon name="time" /></span>
+            <div className="feature-content">
+              <h3>A routine that’s yours</h3>
+              <p>Flexible open hours, expert staff &amp; fair rates</p>
+            </div>
+          </a>
         </div>
       </div>
       <EquipmentSection />

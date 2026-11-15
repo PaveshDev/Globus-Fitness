@@ -40,6 +40,7 @@ export default function GymSlideshow() {
             <GymImage src={slide.src} alt={slide.alt} width="1280" height="960" fetchPriority={index === 0 ? 'high' : 'auto'} />
           </div>
         ))}
+        <div className="slide-overlay" aria-hidden="true" />
         <span className="photo-label"><span />INSIDE OUR GYM</span>
       </div>
       <div className="slideshow-bottom">
@@ -49,9 +50,8 @@ export default function GymSlideshow() {
         </div>
         <div className="slide-controls">
           <button className="icon-button" onClick={() => selectSlide(active - 1)} aria-label="Previous gym photo"><Icon name="left" /></button>
-          <span className="slide-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} <span>/ 04</span></span>
+          <span className="slide-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} <span>/ {String(gymSlides.length).padStart(2, '0')}</span></span>
           <button className="icon-button" onClick={() => selectSlide(active + 1)} aria-label="Next gym photo"><Icon name="right" /></button>
-          <button className="icon-button playback" onClick={() => setPaused(!paused)} disabled={reducedMotion} aria-label={reducedMotion ? 'Autoplay off: reduced motion enabled' : paused ? 'Play slideshow' : 'Pause slideshow'}><Icon name={paused || reducedMotion ? 'play' : 'pause'} /></button>
         </div>
       </div>
       <div className="slide-indicators" aria-label="Choose a gym photo">
