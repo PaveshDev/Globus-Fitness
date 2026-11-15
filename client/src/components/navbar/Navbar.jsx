@@ -32,11 +32,20 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false)
 
+  const handleSearchClick = () => {
+    const el = document.getElementById('equipment')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      window.location.href = '/#equipment'
+    }
+  }
+
   return (
     <header className="site-header" ref={headerRef}>
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label="Globus Fitness home" onClick={closeMenu}>
-          <img src={gymImages.logo} alt="" width="52" height="52" />
+          <img src={gymImages.logo} alt="Globus Fitness Club Logo" width="60" height="60" />
           <span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
@@ -47,10 +56,26 @@ export default function Navbar() {
           <ContactLink className="nav-contact" />
         </nav>
         <div className="desktop-actions">
-          {user ? <Link to="/member" className="button button-primary button-small">My account<Icon name="arrow" /></Link> : <>
-          <Link to="/login" className="login-link">Login</Link>
-          <Link to="/register" className="button button-primary button-small">Register<Icon name="arrow" /></Link>
-          </>}
+          <button
+            type="button"
+            className="search-button"
+            aria-label="Search equipment and memberships"
+            title="Search equipment and memberships"
+            onClick={handleSearchClick}
+          >
+            <Icon name="search" />
+          </button>
+          {user ? (
+            <>
+              <Link to="/member" className="login-link">Member Portal</Link>
+              <Link to="/register" className="button button-primary button-small">Join Now<Icon name="arrow" /></Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="login-link">Member Login</Link>
+              <Link to="/register" className="button button-primary button-small">Join Now<Icon name="arrow" /></Link>
+            </>
+          )}
         </div>
         <button ref={toggleRef} className="menu-toggle" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>
           <Icon name={menuOpen ? 'close' : 'menu'} />
@@ -63,10 +88,17 @@ export default function Navbar() {
         <a href="/#jersey" onClick={closeMenu}>Jersey</a>
         <ContactLink className="nav-contact" onClick={closeMenu} />
         <div className="mobile-auth">
-          {user ? <Link to="/member" className="button button-primary" onClick={closeMenu}>My account</Link> : <>
-          <Link to="/login" className="button button-outline" onClick={closeMenu}>Login</Link>
-          <Link to="/register" className="button button-primary" onClick={closeMenu}>Register<Icon name="arrow" /></Link>
-          </>}
+          {user ? (
+            <>
+              <Link to="/member" className="button button-outline" onClick={closeMenu}>Member Portal</Link>
+              <Link to="/register" className="button button-primary" onClick={closeMenu}>Join Now<Icon name="arrow" /></Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="button button-outline" onClick={closeMenu}>Member Login</Link>
+              <Link to="/register" className="button button-primary" onClick={closeMenu}>Join Now<Icon name="arrow" /></Link>
+            </>
+          )}
         </div>
       </nav>
     </header>

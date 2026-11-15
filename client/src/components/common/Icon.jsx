@@ -13,6 +13,8 @@ const paths = {
   copy: <><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></>,
   check: <polyline points="20 6 9 17 4 12" />,
   bank: <><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20z" /></>,
+  search: <><circle cx="11" cy="11" r="7" /><path d="m21 21-4.35-4.35" /></>,
+  star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor" stroke="none" />,
 }
 
 export default function Icon({ name, className = '' }) {
