@@ -15,6 +15,7 @@ const paths = {
   bank: <><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20z" /></>,
   search: <><circle cx="11" cy="11" r="7" /><path d="m21 21-4.35-4.35" /></>,
   star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor" stroke="none" />,
+  user: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
 }
 
 export default function Icon({ name, className = '' }) {

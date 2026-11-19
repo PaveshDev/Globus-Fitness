@@ -17,6 +17,18 @@ export default function PublicLayout() {
     }
   }, [pathname])
 
+  const handleFooterBrandClick = (event) => {
+    if (pathname === '/') {
+      event.preventDefault()
+      if (window.location.hash) {
+        window.history.pushState(null, '', '/')
+      }
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+      window.scrollTo({ top: 0, behavior })
+      document.getElementById('main-content')?.focus({ preventScroll: true })
+    }
+  }
+
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to content</a>
@@ -24,7 +36,7 @@ export default function PublicLayout() {
       <main id="main-content" tabIndex="-1"><Outlet /></main>
       <footer className="site-footer">
         <div className="container footer-inner">
-          <Link to="/" className="brand" aria-label="Globus Fitness home"><img src={gymImages.logo} alt="Globus Fitness Club Logo" width="50" height="50" /><span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span></Link>
+          <Link to="/" className="brand" aria-label="Globus Fitness home" onClick={handleFooterBrandClick}><img src={gymImages.logo} alt="Globus Fitness Club Logo" width="50" height="50" /><span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span></Link>
           <p>Show up. Put in the work. Keep going.</p>
           <span>© {new Date().getFullYear()} Globus Fitness</span>
         </div>
