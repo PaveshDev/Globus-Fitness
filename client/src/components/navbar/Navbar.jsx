@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { gymImages } from '../../data/gym.js'
 import ContactLink from '../common/ContactLink.jsx'
 import Icon from '../common/Icon.jsx'
@@ -7,6 +7,8 @@ import { useAuth } from '../../context/AuthContext.js'
 
 export default function Navbar() {
   const { user } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const toggleRef = useRef(null)
   const headerRef = useRef(null)
@@ -32,43 +34,44 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false)
 
-  const handleSearchClick = () => {
-    const el = document.getElementById('equipment')
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
+  const handleBrandClick = (event) => {
+    closeMenu()
+    if (location.pathname === '/') {
+      event.preventDefault()
+      if (window.location.hash) {
+        window.history.pushState(null, '', '/')
+      }
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+      window.scrollTo({ top: 0, behavior })
+      document.getElementById('main-content')?.focus({ preventScroll: true })
     } else {
-      window.location.href = '/#equipment'
+      navigate('/')
+      window.scrollTo({ top: 0, behavior: 'instant' })
     }
   }
 
   return (
     <header className="site-header" ref={headerRef}>
       <div className="container header-inner">
-        <Link to="/" className="brand" aria-label="Globus Fitness home" onClick={closeMenu}>
+        <Link to="/" className="brand" aria-label="Globus Fitness home" onClick={handleBrandClick}>
           <img src={gymImages.logo} alt="Globus Fitness Club Logo" width="60" height="60" />
           <span>GLOBUS<span className="brand-subtitle">FITNESS CLUB</span></span>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
-          <a href="/#gym">The gym</a>
+          <a href="/#gym">Home </a>
           <a href="/#equipment">Equipment</a>
           <a href="/#membership">Membership</a>
           <a href="/#jersey">Jersey</a>
           <ContactLink className="nav-contact" />
         </nav>
         <div className="desktop-actions">
-          <button
-            type="button"
-            className="search-button"
-            aria-label="Search equipment and memberships"
-            title="Search equipment and memberships"
-            onClick={handleSearchClick}
-          >
-            <Icon name="search" />
-          </button>
           {user ? (
             <>
-              <Link to="/member" className="login-link">Member Portal</Link>
-              <Link to="/register" className="button button-primary button-small">Join Now<Icon name="arrow" /></Link>
+              <Link to="/member" className="login-link member-user-link" title={`Account: ${user.name || 'Member'}`}>
+                <Icon name="user" className="user-icon" />
+                <span className="user-name">{user.name || user.username || 'My account'}</span>
+              </Link>
+              <Link to="/member" className="button button-primary button-small">My account<Icon name="arrow" /></Link>
             </>
           ) : (
             <>
@@ -90,8 +93,11 @@ export default function Navbar() {
         <div className="mobile-auth">
           {user ? (
             <>
-              <Link to="/member" className="button button-outline" onClick={closeMenu}>Member Portal</Link>
-              <Link to="/register" className="button button-primary" onClick={closeMenu}>Join Now<Icon name="arrow" /></Link>
+              <Link to="/member" className="button button-outline member-user-mobile-btn" onClick={closeMenu}>
+                <Icon name="user" className="user-icon" />
+                <span className="user-name">{user.name || user.username || 'My account'}</span>
+              </Link>
+              <Link to="/member" className="button button-primary" onClick={closeMenu}>My account<Icon name="arrow" /></Link>
             </>
           ) : (
             <>
